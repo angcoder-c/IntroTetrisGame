@@ -12,15 +12,22 @@ public class Block extends Actor
      * Act - do whatever the Block wants to do. This method is called whenever
      * the 'Act' or 'Run' button gets pressed in the environment.
      */
+    int angle = 0;
     public void act()
     {
-        setRotation(0);
-        move(4);
-                if (Greenfoot.isKeyDown("up")) {
-            setRotation(90);
+        setLocation(getX(), getY()+1);
+        if (Greenfoot.isKeyDown("up")) {
+            //angle = angle 
+            setRotation(angle+90);
         }
         if (Greenfoot.isKeyDown("down")) {
-            setRotation(-90);
+            setRotation(angle-90);
+        }
+        if (Greenfoot.isKeyDown("left")) {
+            setLocation(getX()-1, getY());
+        }
+        if (Greenfoot.isKeyDown("right")) {
+            setLocation(getX()+1, getY());
         }
     }
 }
