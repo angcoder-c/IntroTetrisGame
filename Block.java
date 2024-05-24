@@ -1,33 +1,87 @@
-import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
+import greenfoot.*;
+import java.util.Random;
 
-/**
- * Write a description of class Block here.
- * 
- * @author (your name) 
- * @version (a version number or a date)
- */
 public class Block extends Actor
 {
-    /**
-     * Act - do whatever the Block wants to do. This method is called whenever
-     * the 'Act' or 'Run' button gets pressed in the environment.
-     */
-    int angle = 0;
-    public void act()
-    {
-        setLocation(getX(), getY()+1);
+    private static final String[] SPRITE = {"cube", "stick", "other"};
+    private static final int FALL_DELAY = 30;
+    
+    private boolean canMove = true;
+    private int fallCounter = 0;
+    int rotationDelay = 10000;
+    int rotationCounter = 0;
+    
+    public Block() {
+        String sprite = randomSprite();
+        if (sprite=="cube"){
+            setImage("images/sprites/cube.png");
+            getImage().scale(40, 40); 
+        }
+        if (sprite=="stick"){
+            setImage("images/sprites/stick.png");
+            getImage().scale(80, 20); 
+        }
+        if (sprite=="other"){
+            setImage("images/sprites/other.png");
+            getImage().scale(40, 60); 
+        }
+           
+    }
+    
+    public void act() {
+        if (canMove) {
+            handleMovement();
+            handleRotation();
+            fallCounter++;
+            if (fallCounter >= FALL_DELAY) {
+                fall();
+                fallCounter = 0;
+            }
+        }
+        if (rotationCounter > 0) {
+                rotationCounter--;
+        }
+        if (getY()>=getWorld().getHeight()-38) {
+                canMove=false;
+        }
+        if (getX()>=getWorld().getWidth()-38) {
+                canMove=false;
+        }
+    }
+    private void handleRotation() {
         if (Greenfoot.isKeyDown("up")) {
-            //angle = angle 
-            setRotation(angle+90);
+            setRotation(getRotation() + 90);
+        } else if (Greenfoot.isKeyDown("down")) {
+            setRotation(getRotation() - 90);
         }
-        if (Greenfoot.isKeyDown("down")) {
-            setRotation(angle-90);
+    }
+    
+    private void fall() {
+        setLocation(getX(), getY() + 10);
+        checkCollision();
+    }
+    
+    private void handleMovement() {
+        if (rotationCounter == 0){
+        
+            if (Greenfoot.isKeyDown("left")) {
+                setLocation(getX() - 10, getY());
+            }
+            if (Greenfoot.isKeyDown("right")) {
+                setLocation(getX() + 10, getY());
+            }
+            checkCollision();
         }
-        if (Greenfoot.isKeyDown("left")) {
-            setLocation(getX()-1, getY());
+    }
+    
+    private void checkCollision() {
+        if (isAtEdge() || isTouching(Block.class)) {
+            canMove = false;
         }
-        if (Greenfoot.isKeyDown("right")) {
-            setLocation(getX()+1, getY());
-        }
+    }
+    
+    private String randomSprite() {
+        Random rand = new Random();
+        return SPRITE[rand.nextInt(SPRITE.length)];
     }
 }
