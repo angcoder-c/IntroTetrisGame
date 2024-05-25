@@ -8,24 +8,24 @@ public class Block extends Actor
     
     private boolean canMove = true;
     private int fallCounter = 0;
-    int rotationDelay = 10000;
-    int rotationCounter = 0;
+    private int rotationCounter = 0;
     
     public Block() {
         String sprite = randomSprite();
-        if (sprite=="cube"){
-            setImage("images/sprites/cube.png");
-            getImage().scale(40, 40); 
+        switch (sprite) {
+            case "cube":
+                setImage("images/sprites/cube.png");
+                getImage().scale(40, 40);
+                break;
+            case "stick":
+                setImage("images/sprites/stick.png");
+                getImage().scale(80, 20); 
+                break;
+            case "other":
+                setImage("images/sprites/other.png");
+                getImage().scale(40, 60);
+                break;
         }
-        if (sprite=="stick"){
-            setImage("images/sprites/stick.png");
-            getImage().scale(80, 20); 
-        }
-        if (sprite=="other"){
-            setImage("images/sprites/other.png");
-            getImage().scale(40, 60); 
-        }
-           
     }
     
     public void act() {
@@ -39,45 +39,49 @@ public class Block extends Actor
             }
         }
         if (rotationCounter > 0) {
-                rotationCounter--;
-        }
-        if (getY()>=getWorld().getHeight()-38) {
-                canMove=false;
-        }
-        if (getX()>=getWorld().getWidth()-38) {
-                canMove=false;
+            rotationCounter--;
         }
     }
+    
     private void handleRotation() {
-        if (Greenfoot.isKeyDown("up")) {
+        if (Greenfoot.isKeyDown("up") && rotationCounter == 0) {
             setRotation(getRotation() + 90);
-        } else if (Greenfoot.isKeyDown("down")) {
+            rotationCounter = FALL_DELAY;
+        } else if (Greenfoot.isKeyDown("down") && rotationCounter == 0) {
             setRotation(getRotation() - 90);
+            rotationCounter = FALL_DELAY;
         }
     }
     
     private void fall() {
-        setLocation(getX(), getY() + 10);
+        setLocation(getX(), getY() + 1);
         checkCollision();
     }
     
     private void handleMovement() {
-        if (rotationCounter == 0){
-        
+        if (rotationCounter == 0) {
             if (Greenfoot.isKeyDown("left")) {
-                setLocation(getX() - 10, getY());
+                setLocation(getX() - 1, getY());
+                checkCollision();
             }
             if (Greenfoot.isKeyDown("right")) {
-                setLocation(getX() + 10, getY());
+                setLocation(getX() + 1, getY());
+                checkCollision();
             }
-            checkCollision();
         }
     }
     
     private void checkCollision() {
         if (isAtEdge() || isTouching(Block.class)) {
+            if (getY() > 0) {
+                setLocation(getX(), getY() - 1); // Revert last move
+            }
             canMove = false;
         }
+    }
+    
+    public boolean canMove() {
+        return canMove;
     }
     
     private String randomSprite() {
