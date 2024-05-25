@@ -54,18 +54,18 @@ public class Block extends Actor
     }
     
     private void fall() {
-        setLocation(getX(), getY() + 1);
+        setLocation(getX(), getY() + 10);
         checkCollision();
     }
     
     private void handleMovement() {
         if (rotationCounter == 0) {
             if (Greenfoot.isKeyDown("left")) {
-                setLocation(getX() - 1, getY());
+                setLocation(getX() - 10, getY());
                 checkCollision();
             }
             if (Greenfoot.isKeyDown("right")) {
-                setLocation(getX() + 1, getY());
+                setLocation(getX() + 10, getY());
                 checkCollision();
             }
         }
@@ -74,7 +74,7 @@ public class Block extends Actor
     private void checkCollision() {
         if (isAtEdge() || isTouching(Block.class)) {
             if (getY() > 0) {
-                setLocation(getX(), getY() - 1); // Revert last move
+                setLocation(getX(), getY() - 1); // last move
             }
             canMove = false;
         }
