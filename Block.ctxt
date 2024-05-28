@@ -1,19 +1,5 @@
 #BlueJ class context
 comment0.target=Block
-comment1.params=
-comment1.target=Block()
-comment2.params=
-comment2.target=void\ act()
-comment3.params=
-comment3.target=void\ handleRotation()
-comment4.params=
-comment4.target=void\ fall()
-comment5.params=
-comment5.target=void\ handleMovement()
-comment6.params=
-comment6.target=void\ checkCollision()
-comment7.params=
-comment7.target=boolean\ canMove()
-comment8.params=
-comment8.target=java.lang.String\ randomSprite()
-numComments=9
+comment1.params=color
+comment1.target=Block(int)
+numComments=2
