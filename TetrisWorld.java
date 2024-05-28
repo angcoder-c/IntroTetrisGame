@@ -5,7 +5,7 @@ public class TetrisWorld extends World {
     private boolean[][] occupied;
 
     public TetrisWorld() {    
-        super(10, 15, 30);
+        super(15, 15, 30);
         showMainMenu();
     }
 
