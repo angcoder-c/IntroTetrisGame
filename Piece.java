@@ -85,10 +85,7 @@ public class Piece extends Actor {
     }
 
     private void moveDown() {
-        if (canMove(0, 1)) {
-            setLocation(getX(), getY() + 1);
-            updateBlockPositions(0, 1);
-        } else {
+        if (!canMove(0, 1)) {
             placeBlocks();
             World currentWorld = getWorld();
             if (currentWorld instanceof TetrisWorld) {
