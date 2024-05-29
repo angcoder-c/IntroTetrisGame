@@ -5,6 +5,7 @@ public class Piece extends Actor {
     private int[][] shape;
     private int color;
     public TetrisWorld world;
+    private int VELOCITY = 1;
 
     // piezas
     private static final int[][][] SHAPES = {
@@ -27,7 +28,8 @@ public class Piece extends Actor {
     
     private int[] COLORS = {1,2,3};
 
-    public Piece() {
+    public Piece(int speed) {
+        VELOCITY = speed; 
         blocks = new Block[4];
         shape = SHAPES[Greenfoot.getRandomNumber(SHAPES.length)];
         color = COLORS[Greenfoot.getRandomNumber(3)];
@@ -87,11 +89,17 @@ public class Piece extends Actor {
     private void moveDown() {
         if (!canMove(0, 1)) {
             placeBlocks();
-            World currentWorld = getWorld();
-            if (currentWorld instanceof TetrisWorld) {
-                ((TetrisWorld) currentWorld).addObject(new Piece(), 5, 0);
+            // Greenfoot.setWorld(new TetrisWorld());
+        }
+    }
+
+    public boolean isTouchingTop() {
+        for (Block block : blocks) {
+            if (block.getY() <= 0) {
+                return true;
             }
         }
+        return false;
     }
 
     private void rotate() {
@@ -142,13 +150,13 @@ public class Piece extends Actor {
     }
 
     private void fall() {
-        if (Greenfoot.getRandomNumber(100) < 10) {
+        if (Greenfoot.getRandomNumber(100) < 10 * VELOCITY) {
             if (canMove(0, 1)) {
                 setLocation(getX(), getY() + 1);
                 updateBlockPositions(0, 1);
-            } else {
+            } else if (VELOCITY!=0){
                 placeBlocks();
-                world.spawnNewPiece();
+                world.spawnNewPiece(VELOCITY);
             }
         }
     }
@@ -180,6 +188,10 @@ public class Piece extends Actor {
             int y = getY() + block.getY() - getY();
             block.setLocation(x, y);
             world.occupy(x, y);
+            if (getOneIntersectingObject(Top.class) != null) {
+                Greenfoot.setWorld(new TetrisWorld());
+                return;
+            }
         }
         getWorld().removeObject(this);
     }

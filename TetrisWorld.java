@@ -11,42 +11,49 @@ public class TetrisWorld extends World {
 
     public void showMainMenu() {
         removeObjects(getObjects(MenuOption.class));
-        addObject(new MenuOption("Un jugador", "onePlayer"), 5, 6);
-        addObject(new MenuOption("Dos jugadores", "twoPlayers"), 5, 7);
+        removeObjects(getObjects(Piece.class));
+        addObject(new MenuOption("Un jugador", "onePlayer"), 7, 6);
+        addObject(new MenuOption("Dos jugadores", "twoPlayers"), 7, 7);
     }
 
     public void showOnePlayerMenu() {
         removeObjects(getObjects(MenuOption.class));
-        addObject(new MenuOption("Normal", "normal"), 5, 4);
-        addObject(new MenuOption("Difícil", "dificil"), 5, 5);
-        addObject(new MenuOption("Insano", "insano"), 5, 6);
-        addObject(new MenuOption("Tutorial", "tutorialOnePlayer"), 5, 7);
-        addObject(new MenuOption("Volver", "backToMain"), 5, 8);
+        addObject(new MenuOption("Normal", "normal"), 7, 4);
+        addObject(new MenuOption("Difícil", "dificil"), 7, 5);
+        addObject(new MenuOption("Insano", "insano"), 7, 6);
+        addObject(new MenuOption("Tutorial", "tutorialOnePlayer"), 7, 7);
+        addObject(new MenuOption("Volver", "backToMain"), 7, 8);
     }
 
     public void showTwoPlayerMenu() {
         removeObjects(getObjects(MenuOption.class));
-        addObject(new MenuOption("Nueva partida", "newGameTwoPlayers"), 5, 4);
-        addObject(new MenuOption("Tutorial", "tutorialTwoPlayers"), 5, 5);
-        addObject(new MenuOption("Volver", "backToMain"), 5, 6);
+        addObject(new MenuOption("Nueva partida", "newGameTwoPlayers"), 7, 4);
+        addObject(new MenuOption("Tutorial", "tutorialTwoPlayers"), 7, 5);
+        addObject(new MenuOption("Volver", "backToMain"), 7, 6);
     }
 
     public void startNormalMode() {
         removeObjects(getObjects(MenuOption.class));
+        addObject(new Top(), 0, 0);
         // Inicializar la matriz occupied antes de usarla
         occupied = new boolean[getWidth()][getHeight()];
-        if (!checkGameOver()){
-            spawnNewPiece();    
-        }
-
+        spawnNewPiece(1);
     }
 
     public void startDificilMode() {
-        // lógica para el modo difícil
+        removeObjects(getObjects(MenuOption.class));
+        addObject(new Top(), 0, 0);
+        // Inicializar la matriz occupied antes de usarla
+        occupied = new boolean[getWidth()][getHeight()];
+        spawnNewPiece(2);    
     }
 
     public void startInsanoMode() {
-        // lógica para el modo insano
+        removeObjects(getObjects(MenuOption.class));
+        addObject(new Top(), 0, 0);
+        // Inicializar la matriz occupied antes de usarla
+        occupied = new boolean[getWidth()][getHeight()];
+        spawnNewPiece(3);
     }
 
     public void startTutorialOnePlayer() {
@@ -65,8 +72,8 @@ public class TetrisWorld extends World {
         // Aquí podemos manejar la lógica global del juego
     }
 
-    public void spawnNewPiece() {
-        currentPiece = new Piece();
+    public void spawnNewPiece(int speed) {
+        currentPiece = new Piece(speed);
         currentPiece.world = this;
         addObject(currentPiece, 5, 0);
     }
@@ -82,12 +89,12 @@ public class TetrisWorld extends World {
         occupied[x][y] = true;
     }
     
-    private boolean checkGameOver() {
+    private void checkGameOver() {
         for (int x = 0; x < getWidth(); x++) {
             if (isOccupied(x, 0)) {
-                return true;
+                Greenfoot.setWorld(new TetrisWorld());
             }
         }
-        return false;
     }
+
 }

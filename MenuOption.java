@@ -44,7 +44,7 @@ public class MenuOption extends Actor {
                     world.startTutorialTwoPlayers();
                     break;
                 case "backToMain":
-                    world.showMainMenu();
+                    Greenfoot.setWorld(new TetrisWorld());
                     break;
             }
         }
