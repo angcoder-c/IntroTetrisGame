@@ -73,8 +73,6 @@ public class Piece extends Actor {
             setLocation(getX() - 1, getY());
             updateBlockPositions(-1, 0);
         }
-        
-        moveDown();
     }
 
     private void moveRight() {
@@ -82,17 +80,7 @@ public class Piece extends Actor {
             setLocation(getX() + 1, getY());
             updateBlockPositions(1, 0);
         }
-        
-        moveDown();
     }
-
-    private void moveDown() {
-        if (!canMove(0, 1)) {
-            placeBlocks();
-            // Greenfoot.setWorld(new TetrisWorld());
-        }
-    }
-
     public boolean isTouchingTop() {
         for (Block block : blocks) {
             if (block.getY() <= 0) {
@@ -189,6 +177,7 @@ public class Piece extends Actor {
             block.setLocation(x, y);
             world.occupy(x, y);
             if (getOneIntersectingObject(Top.class) != null) {
+                world.backgroundMusic.stop();
                 Greenfoot.setWorld(new TetrisWorld());
                 return;
             }

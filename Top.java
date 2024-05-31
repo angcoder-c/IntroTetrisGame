@@ -1,6 +1,6 @@
 import greenfoot.*;
 
-public class Top extends Actor {
+public class Top extends Actor { 
     public Top() {
         String path = "images/sprites/block-red.png";
         GreenfootImage img = new GreenfootImage(path);

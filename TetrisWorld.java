@@ -3,36 +3,46 @@ import greenfoot.*;  // World, Actor
 public class TetrisWorld extends World {   
     private Piece currentPiece;
     private boolean[][] occupied;
+    private GreenfootImage mainMenuBackground;
+    private GreenfootImage normalModeBackground;
+    private GreenfootImage dificilModeBackground;
+    private GreenfootImage insanoModeBackground;
+    public GreenfootSound backgroundMusic;
 
-    public TetrisWorld() {    
+    public TetrisWorld() {
         super(15, 15, 30);
+        
+        mainMenuBackground = new GreenfootImage("images/backgrounds/background-menu.png");
+        normalModeBackground = new GreenfootImage("images/backgrounds/background-normal.png");
+        dificilModeBackground = new GreenfootImage("images/backgrounds/background-hard.png");
+        insanoModeBackground = new GreenfootImage("images/backgrounds/background-insane.png");
+        
+        // play music
+        backgroundMusic = new GreenfootSound("sounds/background_music.wav");
+        backgroundMusic.playLoop();
         showMainMenu();
     }
 
     public void showMainMenu() {
+        setBackground(mainMenuBackground);
         removeObjects(getObjects(MenuOption.class));
         removeObjects(getObjects(Piece.class));
-        addObject(new MenuOption("Un jugador", "onePlayer"), 7, 6);
-        addObject(new MenuOption("Dos jugadores", "twoPlayers"), 7, 7);
+        addObject(new MenuOption("Start", "onePlayer"), 7, 7);
+        addObject(new Credits(), 7, 10);
     }
 
     public void showOnePlayerMenu() {
+        setBackground(mainMenuBackground);
         removeObjects(getObjects(MenuOption.class));
-        addObject(new MenuOption("Normal", "normal"), 7, 4);
-        addObject(new MenuOption("Difícil", "dificil"), 7, 5);
-        addObject(new MenuOption("Insano", "insano"), 7, 6);
-        addObject(new MenuOption("Tutorial", "tutorialOnePlayer"), 7, 7);
-        addObject(new MenuOption("Volver", "backToMain"), 7, 8);
-    }
-
-    public void showTwoPlayerMenu() {
-        removeObjects(getObjects(MenuOption.class));
-        addObject(new MenuOption("Nueva partida", "newGameTwoPlayers"), 7, 4);
-        addObject(new MenuOption("Tutorial", "tutorialTwoPlayers"), 7, 5);
-        addObject(new MenuOption("Volver", "backToMain"), 7, 6);
+        removeObjects(getObjects(Credits.class));
+        addObject(new MenuOption("Normal", "normal"), 7, 5);
+        addObject(new MenuOption("Difícil", "dificil"), 7, 7);
+        addObject(new MenuOption("Insano", "insano"), 7, 9);
+        addObject(new MenuOption("Volver", "backToMain"), 2, 13);
     }
 
     public void startNormalMode() {
+        setBackground(normalModeBackground);
         removeObjects(getObjects(MenuOption.class));
         addObject(new Top(), 0, 0);
         // Inicializar la matriz occupied antes de usarla
@@ -41,6 +51,7 @@ public class TetrisWorld extends World {
     }
 
     public void startDificilMode() {
+        setBackground(dificilModeBackground);
         removeObjects(getObjects(MenuOption.class));
         addObject(new Top(), 0, 0);
         // Inicializar la matriz occupied antes de usarla
@@ -49,23 +60,12 @@ public class TetrisWorld extends World {
     }
 
     public void startInsanoMode() {
+        setBackground(insanoModeBackground);
         removeObjects(getObjects(MenuOption.class));
         addObject(new Top(), 0, 0);
         // Inicializar la matriz occupied antes de usarla
         occupied = new boolean[getWidth()][getHeight()];
         spawnNewPiece(3);
-    }
-
-    public void startTutorialOnePlayer() {
-        // lógica para el tutorial de un jugador
-    }
-
-    public void startNewGameTwoPlayers() {
-        // lógica para una nueva partida de dos jugadores
-    }
-
-    public void startTutorialTwoPlayers() {
-        // lógica para el tutorial de dos jugadores
     }
 
     public void act() {
