@@ -27,7 +27,7 @@ Stack Master es una versión moderna y adictiva del clásico juego de Tetris, do
 
 ## 📸 ¡Miralo!
 
-![Gameplay GIF](https://github.com/angcoder-c/IntroTetrisGame/blob/prototype/branding/StackMater.gif)
+![Gameplay GIF](https://github.com/angcoder-c/IntroTetrisGame/blob/main/branding/StackMater.gif)
 
 ## 🛠️ Instalación
 
